@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Juke</title>
+    <script src='/angular/angular.js'></script>
+    <script src='/app.js'></script>
+    <link href="/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="/bootstrap-dark.css" rel="stylesheet" />
+    <link href="/style.css" rel="stylesheet" />
+  </head>
+  <body ng-app='app'>
+    <div id="main" class="container-fluid" ng-controller='MainCtrl'>
+
+
+      <div class="col-xs-2">
+        <sidebar>
+          <img src="juke.svg" class="logo">
+          <section>
+            <h4 class="menu-item active">
+              <a href="#">ALBUMS</a>
+            </h4>
+          </section>
+        </sidebar>
+      </div>
+
+      <div class="col-xs-10">
+
+        <div class="album" ng-repeat="album in allAlbums">
+          <p>
+            <h3>{{ album.name }}</h3>
+            <img src="{{ album.imageUrl }}" class="img-thumbnail">
+          </p>
+          <table class='table'>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Artists</th>
+                <th>Genres</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="song in album.songs" ng-class="{cool: currentSong === song.songIndex}">
+                <td>
+                  <button class="btn btn-default btn-xs" ng-click="play(song.songIndex)">
+                    <span class="glyphicon" ng-class="playStatus && currentSong === song.songIndex ? 'glyphicon-pause' : 'glyphicon-play' "></span>
+                  </button>
+                </td>
+                <td>{{ song.name }}</td>
+                <td><span ng-repeat="artist in song.artists">{{ artist.name }}&nbsp;</span></td>
+                <td><span ng-repeat="genre in song.genres">{{ genre }}&nbsp;</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div><!-- end of album class -->
+
+      </div>
+
+      <footer>
+        <div ng-hide="playerControl === false">
+          <div class="pull-left">
+            <button class="btn btn-default">
+              <span class="glyphicon glyphicon-step-backward" ng-click="previous(currentSong)"></span>
+            </button>
+            <button class="btn btn-default">
+              <span class="glyphicon" ng-class="playStatus && currentSong !== '' ? 'glyphicon-pause' : 'glyphicon-play' " ng-click="play(currentSong)"></span>
+            </button>
+            <button class="btn btn-default">
+              <span class="glyphicon glyphicon-step-forward" ng-click="next(currentSong)"></span>
+            </button>
+          </div>
+          <div class="bar">
+              <div class="progress">
+                <div class="progress-bar" ng-style="{width: progress + '%'}"></div>
+              </div>
+            </div>
+        </div>
+      </footer>
+
+    </div>
+  </body>
+</html>
